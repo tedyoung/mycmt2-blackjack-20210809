@@ -35,8 +35,9 @@ public class Hand {
         return handValue;
     }
 
-    String displayFirstCard() {
-        return ConsoleCard.display(cards.get(0));
+    // QUERY Method Safety: snapshot of the data, is it unmodifiable
+    public Card firstCard() {
+        return cards.get(0);
     }
 
     boolean dealerMustDrawCard() {
