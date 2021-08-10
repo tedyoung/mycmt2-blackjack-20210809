@@ -1,7 +1,5 @@
 package com.jitterted.ebp.blackjack.domain;
 
-import com.jitterted.ebp.blackjack.adapter.in.console.ConsoleGame;
-
 public class Game {
 
     private final Deck deck;
@@ -11,18 +9,6 @@ public class Game {
 
     private boolean playerDone;
 
-    public static void main(String[] args) {
-        ConsoleGame.displayWelcomeScreen();
-        playGame();
-        ConsoleGame.resetScreen();
-    }
-
-    private static void playGame() {
-        Game game = new Game();
-        game.initialDeal();
-        game.play();
-    }
-
     public Game() {
         deck = new Deck();
     }
@@ -30,16 +16,6 @@ public class Game {
     public void initialDeal() {
         dealRoundOfCards();
         dealRoundOfCards();
-    }
-
-    public void play() {
-        playerTurn();
-
-        dealerTurn();
-
-        ConsoleGame.displayFinalGameState(this);
-
-        determineOutcome();
     }
 
     private void dealRoundOfCards() {
@@ -67,26 +43,6 @@ public class Game {
         if (!playerHand.isBusted()) {
             while (dealerHand.dealerMustDrawCard()) {
                 dealerHand.drawFrom(deck);
-            }
-        }
-    }
-
-    private void playerTurn() {
-        // get Player's decision: hit until they stand, then they're done (or they go bust)
-
-        while (!playerHand.isBusted()) {
-            ConsoleGame.displayGameState(this);
-            String playerChoice = ConsoleGame.inputFromPlayer().toLowerCase();
-            if (playerChoice.startsWith("s")) {
-                break;
-            }
-            if (playerChoice.startsWith("h")) {
-                playerHand.drawFrom(deck);
-                if (playerHand.isBusted()) {
-                    return;
-                }
-            } else {
-                System.out.println("You need to [H]it or [S]tand");
             }
         }
     }
