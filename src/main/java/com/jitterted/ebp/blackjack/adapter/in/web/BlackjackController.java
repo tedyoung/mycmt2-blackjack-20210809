@@ -30,6 +30,11 @@ public class BlackjackController {
         return "blackjack";
     }
 
+    @GetMapping("/done")
+    public String doneView() {
+        return "done";
+    }
+
     @PostMapping("/hit")
     public String hitCommand() {
         game.playerHits();
