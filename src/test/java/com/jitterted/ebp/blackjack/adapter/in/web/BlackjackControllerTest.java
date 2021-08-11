@@ -128,6 +128,15 @@ class BlackjackControllerTest {
                 .hasSize(3);
     }
 
+    @Test
+    public void playerDealtBlackjackImmediatelyRedirectsToDonePage() throws Exception {
+        Game game = new Game(StubDeck.playerDealtBlackjack());
+        BlackjackController blackjackController = new BlackjackController(game);
 
+        String redirectPage = blackjackController.startGame();
+
+        assertThat(redirectPage)
+                .isEqualTo("redirect:/done");
+    }
     
 }
