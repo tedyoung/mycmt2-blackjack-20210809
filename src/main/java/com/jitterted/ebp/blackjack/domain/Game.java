@@ -82,6 +82,7 @@ public class Game {
         // GUARD/PRE-CONDITION: player is NOT done
         playerHand.drawFrom(deck);
         playerDone = playerHand.isBusted();
+        gameMonitor.roundCompleted(this);
     }
 
     public void playerStands() {
