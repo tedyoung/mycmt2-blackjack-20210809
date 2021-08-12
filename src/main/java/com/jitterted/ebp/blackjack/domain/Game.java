@@ -28,10 +28,7 @@ public class Game {
     public void initialDeal() {
         dealRoundOfCards();
         dealRoundOfCards();
-        if (playerHand.isBlackjack()) {
-            playerDone = true;
-            gameMonitor.roundCompleted(this);
-        }
+        updatePlayerDoneStateTo(playerHand.isBlackjack());
     }
 
     private void dealRoundOfCards() {
@@ -71,10 +68,10 @@ public class Game {
     // 1. clone it -- copy/snapshot, not immutable
     // 2. HandView -- with only cards() and value() methods, is immutable
     // 3. Hand implements HandView -- "live" view of hand, is immutable
+
     public Hand playerHand() {
         return playerHand;
     }
-
     public Hand dealerHand() {
         return dealerHand;
     }
@@ -82,21 +79,24 @@ public class Game {
     public void playerHits() {
         // GUARD/PRE-CONDITION: player is NOT done
         playerHand.drawFrom(deck);
-        playerDone = playerHand.isBusted();
-        if (playerDone) {
-            gameMonitor.roundCompleted(this);
-        }
+        updatePlayerDoneStateTo(playerHand.isBusted());
     }
 
     public void playerStands() {
         // GUARD/PRE-CONDITION: player is NOT done
-        playerDone = true;
         dealerTurn();
-        gameMonitor.roundCompleted(this);
+        updatePlayerDoneStateTo(true);
     }
 
     public boolean isPlayerDone() {
         return playerDone;
+    }
+
+    private void updatePlayerDoneStateTo(boolean playerDone) {
+        if (playerDone) {
+            this.playerDone = true;
+            gameMonitor.roundCompleted(this);
+        }
     }
 
 
