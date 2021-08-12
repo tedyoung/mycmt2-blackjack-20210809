@@ -1,6 +1,5 @@
 package com.jitterted.ebp.blackjack.domain.port;
 
-import com.jitterted.ebp.blackjack.domain.Deck;
 import com.jitterted.ebp.blackjack.domain.Game;
 import com.jitterted.ebp.blackjack.domain.StubDeck;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ class GameMonitorTest {
     public void playerStandsCompletesGameSendsToMonitor() throws Exception {
         // creates the spy based on the interface
         GameMonitor gameMonitorSpy = spy(GameMonitor.class);
-        Game game = new Game(new Deck(), gameMonitorSpy);
+        Game game = new Game(StubDeck.playerNotDealtBlackjack(), gameMonitorSpy);
         game.initialDeal();
 
         game.playerStands();
@@ -45,5 +44,15 @@ class GameMonitorTest {
         game.playerHits();
 
         verify(gameMonitorSpy, never()).roundCompleted(any(Game.class));
+    }
+
+    @Test
+    public void playerDealtBlackjackThenResultsSentToGameMonitor() throws Exception {
+        GameMonitor gameMonitorSpy = spy(GameMonitor.class);
+        Game game = new Game(StubDeck.playerDealtBlackjack(), gameMonitorSpy);
+
+        game.initialDeal();
+
+        verify(gameMonitorSpy).roundCompleted(any(Game.class));
     }
 }
