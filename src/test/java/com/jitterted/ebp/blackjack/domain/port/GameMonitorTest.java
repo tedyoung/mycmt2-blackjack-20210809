@@ -6,6 +6,7 @@ import com.jitterted.ebp.blackjack.domain.StubDeck;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -35,4 +36,14 @@ class GameMonitorTest {
         verify(gameMonitorSpy).roundCompleted(any(Game.class));
     }
 
+    @Test
+    public void playerHitsDoesNotBustThenNoResultSendToGameMonitor() throws Exception {
+        GameMonitor gameMonitorSpy = spy(GameMonitor.class);
+        Game game = new Game(StubDeck.playerHitsAndDoesNotGoBust(), gameMonitorSpy);
+        game.initialDeal();
+
+        game.playerHits();
+
+        verify(gameMonitorSpy, never()).roundCompleted(any(Game.class));
+    }
 }
